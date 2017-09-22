@@ -1,0 +1,18 @@
+{
+  "name": "fiserv-upsell",
+  "authors": [
+    "Hongda Li <lhddragon87@gmail.com>"
+  ],
+  "description": "upsell component",
+  "main": "fiserv-upsell.html",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

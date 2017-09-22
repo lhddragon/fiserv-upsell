@@ -1,0 +1,66 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="rest-api.html">
+
+<dom-module id="subscriber-upsell">
+    <template>
+        <!-- This is the common pattern to include styles into a shadow dom -->
+        <style include="common-styles"></style>
+        <style include="sponsor-styles"></style>
+        <style>
+            .ad-tile {
+                text-align: center;
+            }
+        </style>
+
+        <template is="dom-if" if="{{isDisplay}}">
+
+            <rest-api end-point="../../Home/GetUpsellInfo?subscriberId=" 
+                      session="[[session]]" 
+                      response="{{upsellInfo}}"></rest-api>
+
+            <api-spinner></api-spinner>
+            <error-dialog config="[[config]]" parent-element-selector="challenger-app"></error-dialog>
+
+            <div id="ad-tile-module" class="ad-tile">
+                <a href$="[[_getRedirectPath()]]">
+                    <img src="[[imgUrl]]" alt="[[imgTooltip]]">
+                </a>
+                <!--<script type="text/javascript">mboxCreate("rightAdMbox", 'ebills_available=1');</script>
+                <script src="//fiservsolution.tt.omtrdc.net/m2/fiservsolution/mbox/standard?mboxHost=rxpw-test-current-c1-p1.onefiserv.net&amp;mboxPage=2d888b9cee314e888b54f20b807929f3&amp;screenHeight=864&amp;screenWidth=1536&amp;browserWidth=1536&amp;browserHeight=775&amp;browserTimeOffset=-240&amp;colorDepth=24&amp;mboxSession=ed6d091c26744bea888650cc36343fc1&amp;mboxXDomain=enabled&amp;mboxCount=2&amp;mboxTime=1505829573304&amp;ebills_available=1&amp;mboxPC=f456c9c765684c538211bd303cde50d6.17_74&amp;mboxMCGVID=22375947459904971898430994490095004966&amp;mboxAAMB=hmk_Lq6TPIBMW925SPhw3Q&amp;mboxMCGLH=7&amp;mbox=rightAdMbox&amp;mboxId=0&amp;mboxMCSDID=35A7252D27752672-39BE3A2EC3FB1857&amp;mboxURL=https%3A%2F%2Frxpw-test-current-c1-p1.onefiserv.net%3A8501%2Fimm_17-4-qa%2FPaymentCenter%2FIndex%2F25725&amp;mboxReferrer=https%3A%2F%2Frxpw-test-current-c1-p1.onefiserv.net%3A8501%2Fimm_17-4-qa%2FMFA%2FChallengeUser%2F25725&amp;mboxVersion=63"></script>-->
+            </div>
+        </template>
+
+    </template>
+
+    <script>
+        class SubscriberUpsell extends Polymer.Element {
+            static get is() { return 'subscriber-upsell'; }
+            static get properties() {
+                return {
+                    session: Object,
+                    isDisplay: Boolean,
+                    imgUrl: String,
+                    imgTooltip: String,
+                    redirectUrl: String,
+                    upsellInfo: {
+                        type: Object,
+                        observer: '_onUpsellInfoUpdate'
+                    }
+                }
+            }
+            ready() {
+                super.ready();
+            }
+            _getRedirectPath() {
+                return this.redirectUrl;
+            }
+            _onUpsellInfoUpdate(upsell) {
+                console.log('upsell info changed');
+                console.log(upsell);
+                this.set('imgUrl', upsell.imageUrl);
+                this.set('imgTooltip', upsell.tooltip);
+            }
+        }
+        customElements.define(SubscriberUpsell.is, SubscriberUpsell);
+    </script>
+</dom-module>
